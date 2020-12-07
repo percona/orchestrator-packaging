@@ -1,0 +1,29 @@
+Source: percona-orchestrator
+Section: database
+Priority: optional
+Maintainer: Percona Development Team <info@percona.com>
+Build-Depends:
+ debhelper (>= 9),
+ curl, rsync, git, gcc, g++, bash, tar
+
+Package: percona-orchestrator-cli
+Architecture: any
+Depends: jq (>= 1.5)
+Description: MySQL replication topology management and HA: binary only
+Provides: orchestrator-cli
+Homepage: https://github.com/github/orchestrator
+
+Package: percona-orchestrator-client
+Architecture: any
+Depends: jq (>= 1.5)
+Provides: orchestrator-client
+Description: MySQL replication topology management and HA: client script
+Homepage: https://github.com/github/orchestrator
+
+Package: percona-orchestrator
+Architecture: any
+Depends: jq (>= 1.5)
+Provides: orchestrator
+Description: MySQL replication topology management and HA
+Homepage: https://github.com/github/orchestrator
+
