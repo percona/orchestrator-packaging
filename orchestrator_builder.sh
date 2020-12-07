@@ -141,9 +141,9 @@ get_system(){
     return
 }
 install_go() {
-    wget https://dl.google.com/go/go1.13.1.linux-amd64.tar.gz
+    wget https://golang.org/dl/go1.14.13.linux-amd64.tar.gz
     rm -rf /usr/local/go
-    tar -C /usr/local -xzf go1.13.1.linux-amd64.tar.gz
+    tar -C /usr/local -xzf go1.14.13.linux-amd64.tar.gz
     update-alternatives --install /usr/bin/go go /usr/local/go/bin/go 1
     update-alternatives --set go /usr/local/go/bin/go
 }
@@ -404,12 +404,12 @@ INSTALL=0
 RPM_RELEASE=1
 DEB_RELEASE=1
 REVISION=0
-BRANCH="v3.1.4"
+BRANCH="v3.2.3"
 REPO="https://github.com/openark/orchestrator.git"
 PRODUCT=percona-orchestrator
 DEBUG=0
 parse_arguments PICK-ARGS-FROM-ARGV "$@"
-VERSION='3.1.4'
+VERSION='3.2.3'
 RELEASE='1'
 PRODUCT_FULL=${PRODUCT}-${VERSION}-${RELEASE}
 
