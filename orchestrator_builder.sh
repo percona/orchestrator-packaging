@@ -89,6 +89,7 @@ get_sources(){
     echo "BUILD_NUMBER=${BUILD_NUMBER}" >> orchestrator.properties
     echo "BUILD_ID=${BUILD_ID}" >> orchestrator.properties
     git clone https://github.com/EvgeniyPatlan/orchestrator-packaging.git
+    sed -i -e "s/Release:        [1-9]/Release:        ${RELEASE}/g" ${WORKDIR}/orchestrator-packaging/percona-orchestrator.spec
     git clone "$REPO" ${PRODUCT_FULL}
     retval=$?
     if [ $retval != 0 ]
@@ -105,6 +106,10 @@ get_sources(){
     fi
     REVISION=$(git rev-parse --short HEAD)
     echo "REVISION=${REVISION}" >> ${WORKDIR}/orchestrator.properties
+    wget https://raw.githubusercontent.com/percona/orchestrator-packaging/master/29591_orc-8026.patch
+    git apply 29591_orc-8026.patch
+    git diff
+    rm -f 29591_orc-8026.patch
     rm -fr debian rpm
     mkdir rpm
     cd rpm
@@ -141,9 +146,9 @@ get_system(){
     return
 }
 install_go() {
-    wget https://golang.org/dl/go1.14.13.linux-amd64.tar.gz
+    wget https://golang.org/dl/go1.16.6.linux-amd64.tar.gz
     rm -rf /usr/local/go
-    tar -C /usr/local -xzf go1.14.13.linux-amd64.tar.gz
+    tar -C /usr/local -xzf go1.16.6.linux-amd64.tar.gz
     update-alternatives --install /usr/bin/go go /usr/local/go/bin/go 1
     update-alternatives --set go /usr/local/go/bin/go
 }
@@ -404,12 +409,12 @@ INSTALL=0
 RPM_RELEASE=1
 DEB_RELEASE=1
 REVISION=0
-BRANCH="v3.2.3"
+BRANCH="v3.2.6"
 REPO="https://github.com/openark/orchestrator.git"
 PRODUCT=percona-orchestrator
 DEBUG=0
 parse_arguments PICK-ARGS-FROM-ARGV "$@"
-VERSION='3.2.3'
+VERSION='3.2.6'
 RELEASE='1'
 PRODUCT_FULL=${PRODUCT}-${VERSION}-${RELEASE}
 
