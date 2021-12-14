@@ -1,0 +1,82 @@
+diff --git a/go/http/api.go b/go/http/api.go
+index d4c43d0e..4eb00468 100644
+--- a/go/http/api.go
++++ b/go/http/api.go
+@@ -75,6 +75,8 @@ var apiSynonyms = map[string]string{
+ 	"stop-slave-nice":            "stop-replica-nice",
+ 	"reset-slave":                "reset-replica",
+ 	"restart-slave-statements":   "restart-replica-statements",
++	"enable-semi-sync-master":    "enable-semi-sync-source",
++	"disable-semi-sync-master":   "disable-semi-sync-source",
+ }
+ 
+ var registeredPaths = []string{}
+diff --git a/go/inst/instance.go b/go/inst/instance.go
+index 0f563b77..c3bb4e83 100644
+--- a/go/inst/instance.go
++++ b/go/inst/instance.go
+@@ -185,6 +185,11 @@ func (this *Instance) MajorVersion() []string {
+ 	return MajorVersion(this.Version)
+ }
+ 
++// PatchNumber returns this instance's patch number (e.g. for 5.5.36 it returns "36")
++func (this *Instance) PatchNumber() string {
++	return PatchNumber(this.Version)
++}
++
+ // MajorVersion returns this instance's major version number (e.g. for 5.5.36 it returns "5.5")
+ func (this *Instance) MajorVersionString() string {
+ 	return strings.Join(this.MajorVersion(), ".")
+diff --git a/go/inst/instance_topology_dao.go b/go/inst/instance_topology_dao.go
+index f63ab2db..cb8036a2 100644
+--- a/go/inst/instance_topology_dao.go
++++ b/go/inst/instance_topology_dao.go
+@@ -223,7 +223,11 @@ func SetSemiSyncMaster(instanceKey *InstanceKey, enableMaster bool) (*Instance,
+ 	if err != nil {
+ 		return instance, err
+ 	}
+-	if _, err := ExecInstance(instanceKey, "set @@global.rpl_semi_sync_master_enabled=?", enableMaster); err != nil {
++	cmd := "set @@global.rpl_semi_sync_master_enabled=?"
++	if instance.IsMySQL80() && instance.PatchNumber() == "26" {
++		cmd = "set @@global.rpl_semi_sync_source_enabled=?"
++	}
++	if _, err := ExecInstance(instanceKey, cmd, enableMaster); err != nil {
+ 		return instance, log.Errore(err)
+ 	}
+ 	return ReadTopologyInstance(instanceKey)
+@@ -237,7 +241,11 @@ func SetSemiSyncReplica(instanceKey *InstanceKey, enableReplica bool) (*Instance
+ 	if instance.SemiSyncReplicaEnabled == enableReplica {
+ 		return instance, nil
+ 	}
+-	if _, err := ExecInstance(instanceKey, "set @@global.rpl_semi_sync_slave_enabled=?", enableReplica); err != nil {
++	cmd := "set @@global.rpl_semi_sync_slave_enabled=?"
++	if instance.IsMySQL80() && instance.PatchNumber() == "26" {
++		cmd = "set @@global.rpl_semi_sync_replica_enabled=?"
++	}
++	if _, err := ExecInstance(instanceKey, cmd, enableReplica); err != nil {
+ 		return instance, log.Errore(err)
+ 	}
+ 	if instance.ReplicationIOThreadRuning {
+diff --git a/go/inst/instance_utils.go b/go/inst/instance_utils.go
+index e68ca7d9..3387a8db 100644
+--- a/go/inst/instance_utils.go
++++ b/go/inst/instance_utils.go
+@@ -219,6 +219,18 @@ func MajorVersion(version string) []string {
+ 	return tokens[:2]
+ }
+ 
++// PatchNumber returns a MySQL patch number (e.g. given "5.5.36" it returns "36")
++func PatchNumber(version string) string {
++	tokens := strings.Split(version, ".")
++	if len(tokens) < 3 {
++		return "0"
++	}
++
++	// Remove the build number
++	tokens = strings.Split(tokens[2], "-")
++	return tokens[0]
++}
++
+ // IsSmallerMajorVersion tests two versions against another and returns true if
+ // the former is a smaller "major" varsion than the latter.
+ // e.g. 5.5.36 is NOT a smaller major version as comapred to 5.5.40, but IS as compared to 5.6.9
