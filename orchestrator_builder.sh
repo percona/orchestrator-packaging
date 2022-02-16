@@ -88,7 +88,7 @@ get_sources(){
     echo "VERSION=${VERSION}" >> orchestrator.properties
     echo "BUILD_NUMBER=${BUILD_NUMBER}" >> orchestrator.properties
     echo "BUILD_ID=${BUILD_ID}" >> orchestrator.properties
-    git clone https://github.com/EvgeniyPatlan/orchestrator-packaging.git
+    git clone https://github.com/percona/orchestrator-packaging.git
     sed -i -e "s/Release:        [1-9]/Release:        ${RELEASE}/g" ${WORKDIR}/orchestrator-packaging/percona-orchestrator.spec
     git clone "$REPO" ${PRODUCT_FULL}
     retval=$?
@@ -106,10 +106,6 @@ get_sources(){
     fi
     REVISION=$(git rev-parse --short HEAD)
     echo "REVISION=${REVISION}" >> ${WORKDIR}/orchestrator.properties
-    wget https://raw.githubusercontent.com/percona/orchestrator-packaging/master/29591_orc-8026.patch
-    patch -p1 < 29591_orc-8026.patch
-    git diff
-    rm -f 29591_orc-8026.patch
     rm -fr debian rpm
     mkdir rpm
     cd rpm
@@ -406,16 +402,16 @@ OS_NAME=
 ARCH=
 OS=
 INSTALL=0
-RPM_RELEASE=1
-DEB_RELEASE=1
+RPM_RELEASE=2
+DEB_RELEASE=2
 REVISION=0
-BRANCH="v3.2.6"
-REPO="https://github.com/openark/orchestrator.git"
+BRANCH="master"
+REPO="https://github.com/percona/orchestrator.git"
 PRODUCT=percona-orchestrator
 DEBUG=0
 parse_arguments PICK-ARGS-FROM-ARGV "$@"
 VERSION='3.2.6'
-RELEASE='1'
+RELEASE='2'
 PRODUCT_FULL=${PRODUCT}-${VERSION}-${RELEASE}
 
 check_workdir
