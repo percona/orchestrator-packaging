@@ -1,3 +1,4 @@
 resources /usr/local/orchestrator/
+orchestrator /usr/local/orchestrator/
 orchestrator-sample.conf.json /usr/local/orchestrator/
 orchestrator-sample-sqlite.conf.json /usr/local/orchestrator/

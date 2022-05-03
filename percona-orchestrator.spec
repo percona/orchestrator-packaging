@@ -14,6 +14,7 @@ Epoch:          2
 BuildRequires:  gcc make perl-Digest-SHA
 Requires:       jq >= 1.5
 Requires:       oniguruma
+Conflicts:      orchestrator
 
 %description
 MySQL replication topology management and HA
@@ -45,5 +46,8 @@ bash script/build
 
 
 %changelog
+* Tue May 03 2022 Vadim Yalovets <vadim.yalovets@percona.com>
+- DISTMYSQL-156 Add conflict with openark orchestrator package.
+
 * Tue Apr 07 2020 Evgeniy Patlan <evgeniy.patlan@percona.com>
 - Initial build.
