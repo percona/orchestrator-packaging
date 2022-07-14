@@ -8,15 +8,17 @@ usage () {
     cat <<EOF
 Usage: $0 [OPTIONS]
     The following options may be given :
-        --builddir=DIR      Absolute path to the dir where all actions will be performed
-        --get_sources       Source will be downloaded from github
-        --build_src_rpm     If it is set - src rpm will be built
-        --build_src_deb  If it is set - source deb package will be built
-        --build_rpm         If it is set - rpm will be built
-        --build_deb         If it is set - deb will be built
-        --install_deps      Install build dependencies(root privilages are required)
-        --branch            Branch for build
-        --repo              Repo for build
+        --builddir=DIR              Absolute path to the dir where all actions will be performed
+        --get_sources               Source will be downloaded from github
+        --build_src_rpm             If it is set - src rpm will be built
+        --build_src_deb             If it is set - source deb package will be built
+        --build_rpm                 If it is set - rpm will be built
+        --build_deb                 If it is set - deb will be built
+        --install_deps              Install build dependencies(root privilages are required)
+        --branch                    Branch for build
+        --repo                      Repo for build
+        --package_repo_branch       Package Branch for build
+        --package_repo              Package Repo for build
         --help) usage ;;
 Example $0 --builddir=/tmp/BUILD --get_sources=1 --build_src_rpm=1 --build_rpm=1
 EOF
