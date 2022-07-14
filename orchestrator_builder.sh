@@ -412,6 +412,8 @@ DEB_RELEASE=3
 REVISION=0
 BRANCH="master"
 REPO="https://github.com/percona/orchestrator.git"
+PACKAGE_REPO_BRANCH="main"
+PACKAGE_REPO="https://github.com/percona/orchestrator-packaging"
 PRODUCT=percona-orchestrator
 DEBUG=0
 parse_arguments PICK-ARGS-FROM-ARGV "$@"
