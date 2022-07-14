@@ -44,6 +44,7 @@ bash script/build
 %{__rm} -rf %{buildroot}
 %{__install} -D -m 0644 etc/systemd/orchestrator.service %{buildroot}/lib/systemd/system/orchestrator.service
 %{__install} -D -d -m 0755 %{buildroot}/usr/local/orchestrator/
+%{__install} -D -d -m 0755 %{buildroot}/usr/bin/
 %{__cp} -r bin/resources %{buildroot}/usr/local/orchestrator/resources
 %{__rm} -rf %{buildroot}/usr/local/orchestrator/resources/bin
 %{__cp}  bin/resources/bin/orchestrator-client %{buildroot}/usr/bin/
