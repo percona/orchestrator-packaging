@@ -117,7 +117,7 @@ get_sources(){
     cp ${WORKDIR}/orchestrator-packaging/percona-orchestrator.spec ./
     cd ../
     mv ${WORKDIR}/orchestrator-packaging/debian ./
-    ver="${VERSION} ($(git rev-parse --short HEAD))"
+    ver="${VERSION}-($(git rev-parse --short HEAD))"
     description=$(git describe --tags --always --dirty)
     sed -i "s:\$(git rev-parse HEAD):\"$ver\":" script/build
     sed -i "s:\$(git describe --tags --always --dirty):\"$description\":" script/build
