@@ -28,6 +28,7 @@ MySQL replication topology management and HA: binary only
 %package -n percona-orchestrator-client
 Group:          Applications/Databases
 Summary:        MySQL replication topology management and HA
+Requires:       jq >= 1.5
 %description -n percona-orchestrator-client
 MySQL replication topology management and HA: client script
 
