@@ -45,7 +45,9 @@ parse_arguments() {
             --build_deb=*) DEB="$val" ;;
             --get_sources=*) SOURCE="$val" ;;
             --branch=*) BRANCH="$val" ;;
+            --package_repo_branch=*) PACKAGE_REPO_BRANCH="$val" ;;
             --repo=*) REPO="$val" ;;
+            --package_repo=*) PACKAGE_REPO="$val" ;;
             --install_deps=*) INSTALL="$val" ;;
             --help) usage ;;
             *)
@@ -88,7 +90,10 @@ get_sources(){
     echo "VERSION=${VERSION}" >> orchestrator.properties
     echo "BUILD_NUMBER=${BUILD_NUMBER}" >> orchestrator.properties
     echo "BUILD_ID=${BUILD_ID}" >> orchestrator.properties
-    git clone https://github.com/percona/orchestrator-packaging.git
+    git clone ${PACKAGE_REPO}
+    cd orchestrator-packaging
+    git checkout ${PACKAGE_REPO_BRANCH}
+    cd ..
     sed -i -e "s/Release:        [1-9]/Release:        ${RELEASE}/g" ${WORKDIR}/orchestrator-packaging/percona-orchestrator.spec
     git clone "$REPO" ${PRODUCT_FULL}
     retval=$?
