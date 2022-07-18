@@ -8,15 +8,17 @@ usage () {
     cat <<EOF
 Usage: $0 [OPTIONS]
     The following options may be given :
-        --builddir=DIR      Absolute path to the dir where all actions will be performed
-        --get_sources       Source will be downloaded from github
-        --build_src_rpm     If it is set - src rpm will be built
-        --build_src_deb  If it is set - source deb package will be built
-        --build_rpm         If it is set - rpm will be built
-        --build_deb         If it is set - deb will be built
-        --install_deps      Install build dependencies(root privilages are required)
-        --branch            Branch for build
-        --repo              Repo for build
+        --builddir=DIR              Absolute path to the dir where all actions will be performed
+        --get_sources               Source will be downloaded from github
+        --build_src_rpm             If it is set - src rpm will be built
+        --build_src_deb             If it is set - source deb package will be built
+        --build_rpm                 If it is set - rpm will be built
+        --build_deb                 If it is set - deb will be built
+        --install_deps              Install build dependencies(root privilages are required)
+        --branch                    Branch for build
+        --repo                      Repo for build
+        --package_repo_branch       Package Branch for build
+        --package_repo              Package Repo for build
         --help) usage ;;
 Example $0 --builddir=/tmp/BUILD --get_sources=1 --build_src_rpm=1 --build_rpm=1
 EOF
@@ -45,7 +47,9 @@ parse_arguments() {
             --build_deb=*) DEB="$val" ;;
             --get_sources=*) SOURCE="$val" ;;
             --branch=*) BRANCH="$val" ;;
+            --package_repo_branch=*) PACKAGE_REPO_BRANCH="$val" ;;
             --repo=*) REPO="$val" ;;
+            --package_repo=*) PACKAGE_REPO="$val" ;;
             --install_deps=*) INSTALL="$val" ;;
             --help) usage ;;
             *)
@@ -88,7 +92,10 @@ get_sources(){
     echo "VERSION=${VERSION}" >> orchestrator.properties
     echo "BUILD_NUMBER=${BUILD_NUMBER}" >> orchestrator.properties
     echo "BUILD_ID=${BUILD_ID}" >> orchestrator.properties
-    git clone https://github.com/percona/orchestrator-packaging.git
+    git clone ${PACKAGE_REPO}
+    cd orchestrator-packaging
+    git checkout ${PACKAGE_REPO_BRANCH}
+    cd ..
     sed -i -e "s/Release:        [1-9]/Release:        ${RELEASE}/g" ${WORKDIR}/orchestrator-packaging/percona-orchestrator.spec
     git clone "$REPO" ${PRODUCT_FULL}
     retval=$?
@@ -112,7 +119,7 @@ get_sources(){
     cp ${WORKDIR}/orchestrator-packaging/percona-orchestrator.spec ./
     cd ../
     mv ${WORKDIR}/orchestrator-packaging/debian ./
-    ver=$(git rev-parse HEAD)
+    ver="${VERSION}-($(git rev-parse --short HEAD))"
     description=$(git describe --tags --always --dirty)
     sed -i "s:\$(git rev-parse HEAD):\"$ver\":" script/build
     sed -i "s:\$(git describe --tags --always --dirty):\"$description\":" script/build
@@ -402,16 +409,18 @@ OS_NAME=
 ARCH=
 OS=
 INSTALL=0
-RPM_RELEASE=2
-DEB_RELEASE=2
+RPM_RELEASE=3
+DEB_RELEASE=3
 REVISION=0
 BRANCH="master"
 REPO="https://github.com/percona/orchestrator.git"
+PACKAGE_REPO_BRANCH="main"
+PACKAGE_REPO="https://github.com/percona/orchestrator-packaging"
 PRODUCT=percona-orchestrator
 DEBUG=0
 parse_arguments PICK-ARGS-FROM-ARGV "$@"
 VERSION='3.2.6'
-RELEASE='2'
+RELEASE='3'
 PRODUCT_FULL=${PRODUCT}-${VERSION}-${RELEASE}
 
 check_workdir
