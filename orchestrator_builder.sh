@@ -119,10 +119,11 @@ get_sources(){
     cp ${WORKDIR}/orchestrator-packaging/percona-orchestrator.spec ./
     cd ../
     mv ${WORKDIR}/orchestrator-packaging/debian ./
-    ver="${VERSION}-($(git rev-parse --short HEAD))"
-    description=$(git describe --tags --always --dirty)
+    ver="${VERSION}-${RELEASE}"
+    description="$(git rev-parse HEAD)"
     sed -i "s:\$(git rev-parse HEAD):\"$ver\":" script/build
     sed -i "s:\$(git describe --tags --always --dirty):\"$description\":" script/build
+    sed -i "s:BuildDescribe:GitCommit:" script/build
     cd ../
     tar --owner=0 --group=0 --exclude=.* -czf ${PRODUCT_FULL}.tar.gz ${PRODUCT_FULL}
     echo "UPLOAD=UPLOAD/experimental/BUILDS/${PRODUCT}/${PRODUCT_FULL}/${BRANCH}/${REVISION}/${BUILD_ID}" >> orchestrator.properties
