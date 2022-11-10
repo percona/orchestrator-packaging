@@ -30,6 +30,9 @@ override_dh_auto_build:
 	bash script/build
 	touch $@
 
+override_dh_builddeb:
+	dh_builddeb -- -Zgzip
+
 override_dh_auto_install:
 	@echo "RULES.$@"
 	mkdir -p $(TMP)
