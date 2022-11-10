@@ -410,8 +410,8 @@ OS_NAME=
 ARCH=
 OS=
 INSTALL=0
-RPM_RELEASE=5
-DEB_RELEASE=5
+RPM_RELEASE=1
+DEB_RELEASE=1
 REVISION=0
 BRANCH="master"
 REPO="https://github.com/percona/orchestrator.git"
@@ -421,7 +421,7 @@ PRODUCT=percona-orchestrator
 DEBUG=0
 parse_arguments PICK-ARGS-FROM-ARGV "$@"
 VERSION='3.2.6'
-RELEASE='5'
+RELEASE='6'
 PRODUCT_FULL=${PRODUCT}-${VERSION}-${RELEASE}
 
 check_workdir
