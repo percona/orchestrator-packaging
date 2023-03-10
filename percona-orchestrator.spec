@@ -2,7 +2,7 @@
 
 Name:           percona-orchestrator
 Version:        %{version}
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        MySQL replication topology management and HA
 
 Group:          Applications/Databases
@@ -14,6 +14,7 @@ Epoch:          2
 BuildRequires:  gcc make perl-Digest-SHA
 Requires:       jq >= 1.5
 Requires:       oniguruma
+Requires:       curl
 Conflicts:      orchestrator
 
 %description
