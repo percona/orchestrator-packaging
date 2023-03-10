@@ -15,7 +15,7 @@ Homepage: https://github.com/github/orchestrator
 
 Package: percona-orchestrator-client
 Architecture: any
-Depends: jq (>= 1.5)
+Depends: jq (>= 1.5), curl
 Provides: orchestrator-client
 Description: MySQL replication topology management and HA: client script
 Homepage: https://github.com/github/orchestrator
