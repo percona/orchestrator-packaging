@@ -14,7 +14,6 @@ Epoch:          2
 BuildRequires:  gcc make perl-Digest-SHA
 Requires:       jq >= 1.5
 Requires:       oniguruma
-Requires:       curl
 Conflicts:      orchestrator
 
 %description
@@ -30,6 +29,7 @@ MySQL replication topology management and HA: binary only
 Group:          Applications/Databases
 Summary:        MySQL replication topology management and HA
 Requires:       jq >= 1.5
+Requires:       curl
 %description -n percona-orchestrator-client
 MySQL replication topology management and HA: client script
 
