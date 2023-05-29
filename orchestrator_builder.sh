@@ -150,9 +150,9 @@ get_system(){
     return
 }
 install_go() {
-    wget https://golang.org/dl/go1.16.6.linux-amd64.tar.gz
+    wget https://go.dev/dl/go1.20.4.linux-amd64.tar.gz
     rm -rf /usr/local/go
-    tar -C /usr/local -xzf go1.16.6.linux-amd64.tar.gz
+    tar -C /usr/local -xzf go1.20.4.linux-amd64.tar.gz
     update-alternatives --install /usr/bin/go go /usr/local/go/bin/go 1
     update-alternatives --set go /usr/local/go/bin/go
 }
