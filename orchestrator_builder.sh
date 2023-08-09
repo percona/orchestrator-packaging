@@ -345,17 +345,21 @@ build_source_deb(){
     dch -D unstable --force-distribution -v "${VERSION}-${RELEASE}" "Update to new orchestrator version ${VERSION}"
     dpkg-buildpackage -S
     cd ../
+    ls -la
+
     mkdir -p $WORKDIR/source_deb
     mkdir -p $CURDIR/source_deb
-    cp *.diff.gz $WORKDIR/source_deb
-    cp *_source.changes $WORKDIR/source_deb
+    #cp *.diff.gz $WORKDIR/source_deb
+    #cp *_source.changes $WORKDIR/source_deb
     cp *.dsc $WORKDIR/source_deb
-    cp *.orig.tar.gz $WORKDIR/source_deb
-    cp *.diff.gz $CURDIR/source_deb
-    cp *.debian.tar.* $CURDIR/source_deb
-    cp *_source.changes $CURDIR/source_deb
+    #cp *.orig.tar.gz $WORKDIR/source_deb
+    cp *.tar.xz $WORKDIR/source_deb
+    #cp *.diff.gz $CURDIR/source_deb
+    #cp *.debian.tar.* $CURDIR/source_deb
+    #cp *_source.changes $CURDIR/source_deb
     cp *.dsc $CURDIR/source_deb
-    cp *.orig.tar.gz $CURDIR/source_deb
+    #cp *.orig.tar.gz $CURDIR/source_deb
+    cp *.tar.xz $CURDIR/source_deb
 }
 
 build_deb(){
