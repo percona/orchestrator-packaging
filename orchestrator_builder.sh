@@ -110,6 +110,8 @@ get_sources(){
         git reset --hard
         git clean -xdf
         git checkout "$BRANCH"
+        sed -i -e "s/\[0\]/\[0-9\]/g" build.sh
+        sed -i -e "s/\[01\]/\[0-9\]/g" script/ensure-go-installed
     fi
     REVISION=$(git rev-parse --short HEAD)
     echo "REVISION=${REVISION}" >> ${WORKDIR}/orchestrator.properties
@@ -150,9 +152,9 @@ get_system(){
     return
 }
 install_go() {
-    wget https://go.dev/dl/go1.20.4.linux-amd64.tar.gz
+    wget https://go.dev/dl/go1.22.6.linux-amd64.tar.gz
     rm -rf /usr/local/go
-    tar -C /usr/local -xzf go1.20.4.linux-amd64.tar.gz
+    tar -C /usr/local -xzf go1.22.6.linux-amd64.tar.gz
     update-alternatives --install /usr/bin/go go /usr/local/go/bin/go 1
     update-alternatives --set go /usr/local/go/bin/go
 }
