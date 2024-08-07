@@ -110,8 +110,6 @@ get_sources(){
         git reset --hard
         git clean -xdf
         git checkout "$BRANCH"
-        sed -i -e "s/\[0\]/\[0-9\]/g" build.sh
-        sed -i -e "s/\[01\]/\[0-9\]/g" script/ensure-go-installed
     fi
     REVISION=$(git rev-parse --short HEAD)
     echo "REVISION=${REVISION}" >> ${WORKDIR}/orchestrator.properties
