@@ -149,6 +149,7 @@ get_system(){
     fi
     return
 }
+
 install_go() {
     wget https://go.dev/dl/go1.22.6.linux-amd64.tar.gz
     rm -rf /usr/local/go
@@ -156,6 +157,13 @@ install_go() {
     update-alternatives --install /usr/bin/go go /usr/local/go/bin/go 1
     update-alternatives --set go /usr/local/go/bin/go
 }
+
+switch_to_vault_repo() {
+    sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+    sed -i 's|#\s*baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+    sed -i 's/enabled=0/enabled=1/g' /etc/yum.repos.d/CentOS-Linux-PowerTools.repo
+}
+
 install_deps() {
     if [ $INSTALL = 0 ]
     then
@@ -170,6 +178,9 @@ install_deps() {
     CURPLACE=$(pwd)
 
     if [ "x$OS" = "xrpm" ]; then
+        if [ "x${RHEL}" = "x7" ]; then
+            switch_to_vault_repo
+        fi
         yum -y install wget
         yum clean all
         RHEL=$(rpm --eval %rhel)
