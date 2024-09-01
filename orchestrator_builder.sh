@@ -151,11 +151,19 @@ get_system(){
 }
 
 install_go() {
-    wget https://go.dev/dl/go1.22.6.linux-amd64.tar.gz
-    rm -rf /usr/local/go
-    tar -C /usr/local -xzf go1.22.6.linux-amd64.tar.gz
-    update-alternatives --install /usr/bin/go go /usr/local/go/bin/go 1
-    update-alternatives --set go /usr/local/go/bin/go
+    if [ x"$ARCH" = "xx86_64" ]; then
+        wget https://go.dev/dl/go1.22.6.linux-amd64.tar.gz
+        rm -rf /usr/local/go
+        tar -C /usr/local -xzf go1.22.6.linux-amd64.tar.gz
+        update-alternatives --install /usr/bin/go go /usr/local/go/bin/go 1
+        update-alternatives --set go /usr/local/go/bin/go
+    else
+        wget https://go.dev/dl/go1.22.6.linux-arm64.tar.gz
+        rm -rf /usr/local/go
+        tar -C /usr/local -xzf go1.22.6.linux-arn64.tar.gz
+        update-alternatives --install /usr/bin/go go /usr/local/go/bin/go 1
+        update-alternatives --set go /usr/local/go/bin/go
+    fi
 }
 
 switch_to_vault_repo() {
