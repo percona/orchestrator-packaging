@@ -190,7 +190,7 @@ install_deps() {
       export DEBIAN=$(lsb_release -sc)
       export ARCH=$(echo $(uname -m) | sed -e 's:i686:i386:g')
       apt-get update || true
-      INSTALL_LIST="curl wget rsync build-essential dpkg-dev git tar make gcc g++ debconf debhelper devscripts dh-exec dh-systemd"
+      INSTALL_LIST="curl wget rsync build-essential dpkg-dev git tar make gcc g++ debconf debhelper devscripts dh-exec"
       DEBIAN_FRONTEND=noninteractive apt-get -y install ${INSTALL_LIST}
       install_go
     fi
