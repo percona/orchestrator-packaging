@@ -38,7 +38,6 @@ MySQL replication topology management and HA: client script
 
 
 %build
-ls
 bash script/build
 
 

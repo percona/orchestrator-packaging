@@ -151,11 +151,19 @@ get_system(){
 }
 
 install_go() {
-    wget https://go.dev/dl/go1.22.6.linux-amd64.tar.gz
-    rm -rf /usr/local/go
-    tar -C /usr/local -xzf go1.22.6.linux-amd64.tar.gz
-    update-alternatives --install /usr/bin/go go /usr/local/go/bin/go 1
-    update-alternatives --set go /usr/local/go/bin/go
+    if [ x"$ARCH" = "xx86_64" ]; then
+        wget https://go.dev/dl/go1.22.6.linux-amd64.tar.gz
+        rm -rf /usr/local/go
+        tar -C /usr/local -xzf go1.22.6.linux-amd64.tar.gz
+        update-alternatives --install /usr/bin/go go /usr/local/go/bin/go 1
+        update-alternatives --set go /usr/local/go/bin/go
+    else
+        wget https://go.dev/dl/go1.22.6.linux-arm64.tar.gz
+        rm -rf /usr/local/go
+        tar -C /usr/local -xzf go1.22.6.linux-arm64.tar.gz
+        update-alternatives --install /usr/bin/go go /usr/local/go/bin/go 1
+        update-alternatives --set go /usr/local/go/bin/go
+    fi
 }
 
 switch_to_vault_repo() {
@@ -181,17 +189,16 @@ install_deps() {
         if [ "x${RHEL}" = "x7" ]; then
             switch_to_vault_repo
         fi
-        yum -y install wget
         yum clean all
         RHEL=$(rpm --eval %rhel)
-        INSTALL_LIST="git wget rpm-build gcc make perl-Digest-SHA tar rsync"
+        INSTALL_LIST="which git wget rpm-build gcc make perl-Digest-SHA tar rsync"
         yum -y install ${INSTALL_LIST}
         install_go
     else
       export DEBIAN=$(lsb_release -sc)
       export ARCH=$(echo $(uname -m) | sed -e 's:i686:i386:g')
       apt-get update || true
-      INSTALL_LIST="curl rsync build-essential dpkg-dev git tar make gcc g++ debconf debhelper devscripts dh-exec dh-systemd"
+      INSTALL_LIST="curl wget rsync build-essential dpkg-dev git tar make gcc g++ debconf debhelper devscripts dh-exec"
       DEBIAN_FRONTEND=noninteractive apt-get -y install ${INSTALL_LIST}
       install_go
     fi
