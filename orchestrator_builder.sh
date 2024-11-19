@@ -152,15 +152,15 @@ get_system(){
 
 install_go() {
     if [ x"$ARCH" = "xx86_64" ]; then
-        wget https://go.dev/dl/go1.22.7.linux-amd64.tar.gz
+        wget https://go.dev/dl/go1.23.3.linux-amd64.tar.gz
         rm -rf /usr/local/go
-        tar -C /usr/local -xzf go1.22.7.linux-amd64.tar.gz
+        tar -C /usr/local -xzf go1.23.3.linux-amd64.tar.gz
         update-alternatives --install /usr/bin/go go /usr/local/go/bin/go 1
         update-alternatives --set go /usr/local/go/bin/go
     else
-        wget https://go.dev/dl/go1.22.7.linux-arm64.tar.gz
+        wget https://go.dev/dl/go1.23.3.linux-arm64.tar.gz
         rm -rf /usr/local/go
-        tar -C /usr/local -xzf go1.22.7.linux-arm64.tar.gz
+        tar -C /usr/local -xzf go1.23.3.linux-arm64.tar.gz
         update-alternatives --install /usr/bin/go go /usr/local/go/bin/go 1
         update-alternatives --set go /usr/local/go/bin/go
     fi
