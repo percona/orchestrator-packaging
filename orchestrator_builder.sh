@@ -110,6 +110,7 @@ get_sources(){
         git reset --hard
         git clean -xdf
         git checkout "$BRANCH"
+        go mod vendor
     fi
     REVISION=$(git rev-parse --short HEAD)
     echo "REVISION=${REVISION}" >> ${WORKDIR}/orchestrator.properties
@@ -141,6 +142,11 @@ get_system(){
         RHEL=$(rpm --eval %rhel)
         ARCH=$(echo $(uname -m) | sed -e 's:i686:i386:g')
         OS_NAME="el$RHEL"
+        OS="rpm"
+    elif [ -f /etc/amazon-linux-release ]; then
+        RHEL=$(rpm --eval %amzn)
+        ARCH=$(echo $(uname -m) | sed -e 's:i686:i386:g')
+        OS_NAME="amzn$RHEL"
         OS="rpm"
     else
         ARCH=$(uname -m)
@@ -190,7 +196,7 @@ install_deps() {
             switch_to_vault_repo
         fi
         yum clean all
-        RHEL=$(rpm --eval %rhel)
+        #RHEL=$(rpm --eval %rhel)
         INSTALL_LIST="which git wget rpm-build gcc make perl-Digest-SHA tar rsync"
         yum -y install ${INSTALL_LIST}
         install_go
@@ -313,8 +319,8 @@ build_rpm(){
     cd rb/SRPMS/
     #
     cd $WORKDIR
-    RHEL=$(rpm --eval %rhel)
-    ARCH=$(echo $(uname -m) | sed -e 's:i686:i386:g')
+    #RHEL=$(rpm --eval %rhel)
+    #ARCH=$(echo $(uname -m) | sed -e 's:i686:i386:g')
     rpmbuild --define "_topdir ${WORKDIR}/rb" --define "dist .$OS_NAME" --define "version ${VERSION}" --rebuild rb/SRPMS/$SRC_RPM
 
     return_code=$?
