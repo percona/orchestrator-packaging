@@ -158,21 +158,21 @@ get_system(){
 
 install_go() {
     if [ x"$ARCH" = "xx86_64" ]; then
-        until wget https://go.dev/dl/go1.25.3.linux-amd64.tar.gz; do
+        until wget https://go.dev/dl/go1.25.1.linux-amd64.tar.gz; do
             echo "Service not ready, retrying in 10 seconds..."
             sleep 10
         done
         rm -rf /usr/local/go
-        tar -C /usr/local -xzf go1.25.3.linux-amd64.tar.gz
+        tar -C /usr/local -xzf go1.25.1.linux-amd64.tar.gz
         update-alternatives --install /usr/bin/go go /usr/local/go/bin/go 1
         update-alternatives --set go /usr/local/go/bin/go
     else
-        until wget https://go.dev/dl/go1.25.3.linux-arm64.tar.gz; do
+        until wget https://go.dev/dl/go1.25.1.linux-arm64.tar.gz; do
             echo "Service not ready, retrying in 10 seconds..."
             sleep 10
         done
         rm -rf /usr/local/go
-        tar -C /usr/local -xzf go1.25.3.linux-arm64.tar.gz
+        tar -C /usr/local -xzf go1.25.1.linux-arm64.tar.gz
         update-alternatives --install /usr/bin/go go /usr/local/go/bin/go 1
         update-alternatives --set go /usr/local/go/bin/go
     fi
