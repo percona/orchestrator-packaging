@@ -164,19 +164,18 @@ install_go() {
             echo "Service not ready, retrying in 30 seconds..."
             sleep 30
         done
-        rm -rf /usr/bin/go
-        tar -C /usr/bin -xzf go${GO_VERSION}.linux-amd64.tar.gz
-        #update-alternatives --install /usr/bin/go go /usr/local/go/bin/go 1
-        #update-alternatives --set go /usr/local/go/bin/go
+        rm -rf /usr/local/go
+        tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz
     else
         until wget https://go.dev/dl/go${GO_VERSION}.linux-arm64.tar.gz; do
             echo "Service not ready, retrying in 30 seconds..."
             sleep 30
         done
-        rm -rf /usr/bin/go
-        tar -C /usr/bin -xzf go${GO_VERSION}.linux-arm64.tar.gz
+        rm -rf /usr/local/go
+        tar -C /usr/local -xzf go${GO_VERSION}.linux-arm64.tar.gz
     fi
-    export PATH=$PATH:/usr/bin/go/bin
+    update-alternatives --install /usr/bin/go go /usr/local/go/bin/go 1
+    update-alternatives --set go /usr/local/go/bin/go
     go version
     whereis go
 }
