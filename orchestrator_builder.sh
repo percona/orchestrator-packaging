@@ -157,25 +157,27 @@ get_system(){
 }
 
 install_go() {
+    GO_VERSION="1.26.5"
+    export PATH=$PATH:/usr/bin/go/bin
     if [ x"$ARCH" = "xx86_64" ]; then
-        until wget https://go.dev/dl/go1.26.4.linux-amd64.tar.gz; do
-            echo "Service not ready, retrying in 10 seconds..."
-            sleep 10
+        until wget https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz; do
+            echo "Service not ready, retrying in 30 seconds..."
+            sleep 30
         done
         rm -rf /usr/local/go
-        tar -C /usr/local -xzf go1.26.4.linux-amd64.tar.gz
-        update-alternatives --install /usr/bin/go go /usr/local/go/bin/go 1
-        update-alternatives --set go /usr/local/go/bin/go
+        tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz
     else
-        until wget https://go.dev/dl/go1.26.4.linux-arm64.tar.gz; do
-            echo "Service not ready, retrying in 10 seconds..."
-            sleep 10
+        until wget https://go.dev/dl/go${GO_VERSION}.linux-arm64.tar.gz; do
+            echo "Service not ready, retrying in 30 seconds..."
+            sleep 30
         done
         rm -rf /usr/local/go
-        tar -C /usr/local -xzf go1.26.4.linux-arm64.tar.gz
-        update-alternatives --install /usr/bin/go go /usr/local/go/bin/go 1
-        update-alternatives --set go /usr/local/go/bin/go
+        tar -C /usr/local -xzf go${GO_VERSION}.linux-arm64.tar.gz
     fi
+    update-alternatives --install /usr/bin/go go /usr/local/go/bin/go 1
+    update-alternatives --set go /usr/local/go/bin/go
+    go version
+    whereis go
 }
 
 switch_to_vault_repo() {
