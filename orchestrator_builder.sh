@@ -157,7 +157,7 @@ get_system(){
 }
 
 install_go() {
-    GO_VERSION="1.26.5"
+    GO_VERSION="1.26.6"
     export PATH=$PATH:/usr/bin/go/bin
     if [ x"$ARCH" = "xx86_64" ]; then
         until wget https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz; do
