@@ -157,7 +157,7 @@ get_system(){
 }
 
 install_go() {
-    GO_VERSION="1.26.6"
+    GO_VERSION="1.26.10"
     export PATH=$PATH:/usr/bin/go/bin
     if [ x"$ARCH" = "xx86_64" ]; then
         until wget https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz; do
@@ -209,8 +209,16 @@ install_deps() {
         yum -y install ${INSTALL_LIST}
         install_go
     else
-      export DEBIAN=$(lsb_release -sc)
+      export DEBIAN="$(. /etc/os-release && echo "$VERSION_CODENAME")"
       export ARCH=$(echo $(uname -m) | sed -e 's:i686:i386:g')
+      if [ "${DEBIAN}" == "bullseye" ]; then
+         sed -i -E '/bullseye(-security|-updates)?[[:space:]]/d' /etc/apt/sources.list
+cat <<'EOF' | tee -a /etc/apt/sources.list
+deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/20260830T000000Z/ bullseye main
+deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/20260830T000000Z/ bullseye-updates main
+deb [check-valid-until=no] http://snapshot.debian.org/archive/debian-security/20260830T000000Z/ bullseye-security main
+EOF
+      fi
       apt-get update || true
       INSTALL_LIST="curl wget rsync build-essential dpkg-dev git tar make gcc g++ debconf debhelper devscripts dh-exec"
       DEBIAN_FRONTEND=noninteractive apt-get -y install ${INSTALL_LIST}
